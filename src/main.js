@@ -2,6 +2,10 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import './plugins/element.js'
+import { Main } from 'element-ui'
+
+Vue.use(Main)
 
 Vue.config.productionTip = false
 
