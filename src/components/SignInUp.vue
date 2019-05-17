@@ -2,7 +2,7 @@
     <main class="page">
         <div class="container" id="container">
             <div class="form-container sign-up-container">
-                <form action="#">
+                <form @submit.prevent="register" action="#">
                     <h1>Create Account</h1>
                     <div class="social-container">
                         <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -10,14 +10,14 @@
                         <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                     <span>or use your email for registration</span>
-                    <input type="text" placeholder="Name" />
-                    <input type="email" placeholder="Email" />
-                    <input type="password" placeholder="Password" />
+                    <input type="text" v-model="name1" placeholder="Name" />
+                    <input type="email" v-model="email1" placeholder="Email" />
+                    <input type="password" v-model="password1" placeholder="Password" /><!--maybe need to make confrim pass :)-->
                     <button>Sign Up</button>
                 </form>
             </div>
             <div class="form-container sign-in-container">
-                <form action="#">
+                <form @submit.prevent="login" action="#">
                     <h1>Sign in</h1>
                     <div class="social-container">
                         <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -25,10 +25,10 @@
                         <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                     <span>or use your account</span>
-                    <input type="email" placeholder="Email" />
-                    <input type="password" placeholder="Password" />
+                    <input type="email" v-model="name2" placeholder="Email" />
+                    <input type="password" v-model="email2" placeholder="Password" />
                     <a href="#">Forgot your password?</a>
-                    <button>Sign In</button>
+                    <button type="submit">Sign In</button>
                 </form>
             </div>
             <div class="overlay-container">
@@ -56,10 +56,23 @@
 export default {
     data(){
         return{
-
+            name:"",
+            email:"",
+            password:"",
+            is_admin: null, //for found that some body is admin or not.we can do this by checking the name and password and then change is_admin:)
+            //these are for login
+            name2:"",
+            email2:""
         }
     },
+    /*NOTICEMENT**
+        1-login function => _notice to that we have console log here and have a page with /secure url.so we should change it.
+                            _maybe we have to add alert box to show that alert instead console.log()
+        2-register function => 
+                            _
+    */
     methods:{
+        //sliding Signin and SignUp
         addClass:function(){
             const container = document.getElementById("container");
             container.classList.add("right-panel-active")
@@ -67,6 +80,33 @@ export default {
         removeclass:function(){
             const container = document.getElementById("container");
             container.classList.remove("right-panel-active")
+        },
+        //request methods
+        login:function(){
+            let email = this.email;
+            let password = this.password;
+            this.$store.dispatch('login' , {email, password})
+            .then((result) => {
+                console.log(result);
+                this.$router.push('/securepage')
+            }).catch((err) => {
+                console.log(err)
+            });
+        },
+        register:function(){
+            let data = {
+                name : this.name,
+                email : this.email,
+                password : this.password,
+                is_admin : this.is_admin
+            }
+            this.$store.dispatch('register' , data)
+            .then((result) => {
+                console.log(result)
+                this.$router.push('/securepage')
+            }).catch((err) => {
+                console.log(err)
+            });
         }
     },
     created(){

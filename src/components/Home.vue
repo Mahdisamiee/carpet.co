@@ -9,7 +9,7 @@
             </div>
         </div>
 
-        <section class="section section-light">
+        <section class="section section-blue">
             <h2>Section One</h2>
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
@@ -82,6 +82,12 @@
                 </span>
             </div>
         </div>
+
+        <footer>
+            <div>
+                <p>this site designed by <span id="teamname">AtripleM</span>. All rights are reserved for <span id="projectname">Carpet.co</span></p>
+            </div>
+        </footer>
     </main>
 </template>
 
@@ -122,10 +128,13 @@ main{
 .section{
     text-align: center;
     padding: 50px 80px;
+    border:2px solid #4286f4;
+    border-right: none;
+    border-left: none;
 }
 
-.section-light{
-    background-color: #f4f4f4;
+.section-blue{
+    background-color: #ebebeb;
     color: rgb(85, 84, 84);
 }
 
@@ -146,7 +155,7 @@ main{
     opacity: 1;
 }
 .ptext .border{
-    background-color: #4286f4;
+    background-color: #353030;
     color: #fff;
     padding: 20px;
     font-size: 28px;
@@ -156,6 +165,19 @@ main{
 
 .ptext .trans{
     background-color: transparent;
+}
+
+footer{
+    min-height: 100px;
+    background-color: #4286f4;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 0 0;
+}
+footer #teamname,#projectname{
+    color: crimson;
+    font-weight: bold;
 }
 
 

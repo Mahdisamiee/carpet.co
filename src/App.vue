@@ -10,12 +10,9 @@
       <div class="nav">
         <div class="innernav">
           <router-link to="/">Home</router-link> |
-          <!-- here we add router that we need for our project section
-
-          <router-link v-if="!isLoggedIn" to="/register">Filtering</router-link> |
-
-          -->
           <router-link to="/register">Register</router-link> |
+          <!-- here we add router that we need for our project section-->
+          <span v-if="isLoggedIn"><a href="#" @click="logout">logout</a> | </span>
         </div>
       </div>
     </div>
@@ -30,14 +27,41 @@
 
 export default {
   name: 'app',
-  
+  data(){
+    return{
+
+    }
+  },
+  computed:{
+    isLoggedIn(){
+      return this.$store.getters.isLoggedIn;
+    }
+  },
+  methods:{
+    logout:function(){
+      this.$store.dispatch('logout')
+      .then((result) => {
+        console.log(result)
+      })
+    }
+  },
+  created() {//handling Expired token cases
+      this.$http.interceptors.response.use(undefined, function (err) {//this is a axios request and i just know it is for token :)
+        return new Promise(function (resolve, reject) {
+          if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+            this.$store.dispatch('logout')
+          }
+          throw err;
+        });
+    });
+  }
 }
 </script>
 
 <style>
   @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
   #app{
-    font-family: 'Montserrat',sans-serif;
+    font-family: 'Montserrat',Arial, Helvetica, sans-serif;
     box-sizing: border-box;
     padding: 0;
     margin: 0;
@@ -91,6 +115,7 @@ export default {
     height: 120px;
     padding: 0;
     margin: 0;
+    margin-bottom: 5px;
     letter-spacing: 2px;
   }
   .header .logo{
