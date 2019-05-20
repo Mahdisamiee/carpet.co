@@ -33,18 +33,16 @@ export default new Vuex.Store({
     login({commit} , user){
       return new Promise((resolve , rej)=>{
         commit('auth_request');
-        axios({url:'http://172.16.37.217:3000/register', data:user , method:'post'})
+        axios({url:'http://172.16.37.217:3000/register', data:user , method:'POST'})
         .then(resp=>{
           const token = resp.data.token
           const user = resp.data.user
           localStorage.setItem('token' , token)
           axios.defaults.headers.common['pgr-token'] = token
           commit('auth_success' , token , user)
-          console.log("hiiiiiii")
           resolve(resp)
         })
         .catch(err =>{
-          console.log("hellllo")
           commit('auth_error')
           localStorage.removeItem('token')
           rej(err)
@@ -55,7 +53,7 @@ export default new Vuex.Store({
     register({commit} , user){
       return new Promise((resolve , rej)=>{
         commit('auth_request');
-        axios.post('http://172.16.37.217:3000/' , {data:user })
+        axios({url:'http://172.16.37.217:3000/register' , data:user , method :"POST"})
         .then(resp=>{
           const token = resp.data.token
           const user = resp.data.user

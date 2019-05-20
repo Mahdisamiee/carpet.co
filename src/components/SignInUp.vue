@@ -25,8 +25,8 @@
                         <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                     <span>or use your account</span>
-                    <input type="email" v-model="name2" placeholder="Email" />
-                    <input type="password" v-model="email2" placeholder="Password" />
+                    <input type="email" v-model="email2" placeholder="Email" />
+                    <input type="password" v-model="password" placeholder="Password" />
                     <a href="#">Forgot your password?</a>
                     <button type="submit">Sign In</button>
                 </form>
@@ -61,8 +61,8 @@ export default {
             password:"",
             is_admin: null, //for found that some body is admin or not.we can do this by checking the name and password and then change is_admin:)
             //these are for login
-            name2:"",
-            email2:""
+            email2:"",
+            password2 : ""
         }
     },
     /*NOTICEMENT**
@@ -84,7 +84,7 @@ export default {
         //request methods
         login:function(){
             let email = this.email2;
-            let password = this.password;
+            let password = this.password2;
             this.$store.dispatch('login' , {email,password})
             .then((result) => {
                 console.log(result);

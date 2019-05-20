@@ -122,7 +122,7 @@ main{
     min-height: 400px;
 }
 .pimg3{
-    background-image: url("../assets/back6.jpeg");
+    background-image: url("../assets/back7.jpeg");
     min-height: 400px;
 }
 .section{
