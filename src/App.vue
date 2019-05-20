@@ -12,7 +12,12 @@
           <router-link to="/">Home</router-link> |
           <router-link to="/register">Register</router-link> |
           <!-- here we add router that we need for our project section-->
-          <span v-if="isLoggedIn"><a href="#" @click="logout">logout</a> | </span>
+          
+          <span v-if="isLoggedIn"><router-link to="/secure">Secure</router-link> | </span>
+          <span v-if="isLoggedIn"><router-link to="/secure2">Secure2</router-link> | </span>
+          <span v-if="isLoggedIn"><router-link to="/secure3">Secure3</router-link> | </span>
+
+          <span v-if="isLoggedIn"><a href="#" @click="logout">Logout</a> | </span>
         </div>
       </div>
     </div>
@@ -42,6 +47,7 @@ export default {
       this.$store.dispatch('logout')
       .then((result) => {
         console.log(result)
+        this.$router.push('/register')
       })
     }
   },
@@ -108,7 +114,7 @@ export default {
 <style scoped>
   .header{
     display: grid;
-    grid-template-columns: 1fr 2fr 2fr;
+    grid-template-columns: 1fr 1fr 2fr;
     align-content: center;
     justify-content: space-between;
     background-image: linear-gradient(110deg,#2193b0,#6dd5ed);

@@ -10,9 +10,9 @@
                         <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                     <span>or use your email for registration</span>
-                    <input type="text" v-model="name1" placeholder="Name" />
-                    <input type="email" v-model="email1" placeholder="Email" />
-                    <input type="password" v-model="password1" placeholder="Password" /><!--maybe need to make confrim pass :)-->
+                    <input type="text" v-model="name" placeholder="Name" />
+                    <input type="email" v-model="email" placeholder="Email" />
+                    <input type="password" v-model="password" placeholder="Password" /><!--maybe need to make confrim pass :)-->
                     <button>Sign Up</button>
                 </form>
             </div>
@@ -83,9 +83,9 @@ export default {
         },
         //request methods
         login:function(){
-            let email = this.email;
+            let email = this.email2;
             let password = this.password;
-            this.$store.dispatch('login' , {email, password})
+            this.$store.dispatch('login' , {email,password})
             .then((result) => {
                 console.log(result);
                 this.$router.push('/securepage')

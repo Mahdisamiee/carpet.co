@@ -1,6 +1,6 @@
 <template>
     <main>
-        <p>this is secure page.</p>
+        this is Secure3
     </main>
 </template>
 

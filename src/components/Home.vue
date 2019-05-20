@@ -114,7 +114,7 @@ main{
     background-attachment: fixed;
 }
 .pimg1{
-    background-image: url("../assets/back7.jpeg");
+    background-image: url("../assets/back8.jpeg");
     min-height: 550px;
 }
 .pimg2{
