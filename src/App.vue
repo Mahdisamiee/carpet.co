@@ -10,14 +10,14 @@
       <div class="nav">
         <div class="innernav">
           <router-link to="/">Home</router-link> |
-          <router-link to="/register">Register</router-link> |
+          <span v-if="!isLoggedIn"><router-link to="/register">Register</router-link> | </span>
           <!-- here we add router that we need for our project section-->
           
           <span v-if="isLoggedIn"><router-link to="/secure">Secure</router-link> | </span>
           <span v-if="isLoggedIn"><router-link to="/secure2">Secure2</router-link> | </span>
           <span v-if="isLoggedIn"><router-link to="/secure3">Secure3</router-link> | </span>
 
-          <span v-if="isLoggedIn"><a href="#" @click="logout">Logout</a> | </span>
+          <span v-if="isLoggedIn"><a id="logout" href="#" @click="logout">Logout</a> | </span>
         </div>
       </div>
     </div>
@@ -149,6 +149,11 @@ export default {
   .header .nav .router-link-exact-active{
     background: #fff;
     color: #6dd5ed;
+  }
+
+  .header .nav #logout{
+    background-color: #999;
+    font-weight: 500;
   }
 </style>
 
