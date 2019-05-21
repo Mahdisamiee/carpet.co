@@ -26,7 +26,7 @@
                     </div>
                     <span>or use your account</span>
                     <input type="email" v-model="email2" placeholder="Email" />
-                    <input type="password" v-model="password" placeholder="Password" />
+                    <input type="password" v-model="password2" placeholder="Password" />
                     <a href="#">Forgot your password?</a>
                     <button type="submit">Sign In</button>
                 </form>
