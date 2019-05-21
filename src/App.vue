@@ -12,7 +12,6 @@
           <router-link to="/">Home</router-link> |
           <span v-if="!isLoggedIn"><router-link to="/register">Register</router-link> | </span>
           <!-- here we add router that we need for our project section-->
-          
           <span v-if="isLoggedIn"><router-link to="/secure">Secure</router-link> | </span>
           <span v-if="isLoggedIn"><router-link to="/secure2">Secure2</router-link> | </span>
           <span v-if="isLoggedIn"><router-link to="/secure3">Secure3</router-link> | </span>
@@ -93,19 +92,19 @@ export default {
 
 @keyframes coming {
   from{
-    transform: translateX(-300px);
+    transform: scale(1.25);
   }
   to{
-    transform: translateX(0);
+    transform: scale(1);
     opacity: 1;
   }
 }
 @keyframes going {
   from{
-    transform: translateX(0);
+    transform: scale(1)
   }
   to{
-    transform: translateX(100px);
+    transform: scale(0.85);
     opacity: 0;
   }
 }

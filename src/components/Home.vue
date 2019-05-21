@@ -59,19 +59,14 @@
             </div>
         </div>
 
-        <section class="section section-dark">
-            <h2>Section three</h2>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-                Sit error possimus quis quisquam similique ratione eaque 
-                quaerat voluptatibus, fugiat, beatae perferendis sint pariatur 
-                commodi? Optio dolores exercitationem pariatur voluptatem earum 
-                expedita tempore magnam cumque facere nihil ipsum sit tenetur 
-                repudiandae ducimus sequi, quasi libero perferendis quidem 
-                quisquam deleniti suscipit eos non quis? Iusto quidem cupiditate 
-                cum beatae voluptatem. Omnis consectetur nulla est fugit non 
-                ullam ab ipsa deserunt officiis voluptas,
-            </p>
+        <section id="imggallery" class="section section-dark">
+            <div>
+                <el-carousel :interval="4000" type="card" height="200px">
+                    <el-carousel-item v-for="item in 6" :key="item">
+                        <h3 class="medium">{{ item }}</h3>
+                    </el-carousel-item>
+                </el-carousel>
+            </div>
         </section>
         
 
@@ -142,6 +137,26 @@ main{
     background-color: #282e34;
     color: #ddd;
 }
+#imggallery{
+    padding: 50px 200px;
+}
+/* this are for element-elem*/
+.el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 200px;
+    margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+    background-color:rgb(32, 30, 30);
+}
+
+.el-carousel__item:nth-child(2n+1) {
+    background-color: rgb(153, 153, 153);
+}
+
 
 .ptext{
     position: absolute;
