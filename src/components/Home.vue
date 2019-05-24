@@ -61,9 +61,9 @@
 
         <section id="imggallery" class="section section-dark">
             <div>
-                <el-carousel :interval="4000" type="card" height="200px">
-                    <el-carousel-item v-for="item in 6" :key="item">
-                        <h3 class="medium">{{ item }}</h3>
+                <el-carousel  height="300px">
+                    <el-carousel-item v-for="item in imges" :key="item">
+                        <img class="medium" :src="item" alt="images">
                     </el-carousel-item>
                 </el-carousel>
             </div>
@@ -88,7 +88,15 @@
 
 <script>
 export default {
-
+    data(){
+        return{
+            imges:[
+                '../assets/back4.jpeg',
+                '../assets/back5.jpeg',
+                '../assets/back6.jpeg',
+            ]
+        }
+    }
 }
 </script>
 
@@ -140,6 +148,7 @@ main{
 #imggallery{
     padding: 50px 200px;
 }
+
 /* this are for element-elem*/
 .el-carousel__item h3 {
     color: #475669;
@@ -150,7 +159,8 @@ main{
 }
 
 .el-carousel__item:nth-child(2n) {
-    background-color:rgb(32, 30, 30);
+    
+    background-color: rgb(221, 221, 221);
 }
 
 .el-carousel__item:nth-child(2n+1) {

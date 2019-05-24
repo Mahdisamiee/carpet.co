@@ -30,10 +30,10 @@ export default new Vuex.Store({
   },
 
   actions: {
-    login({commit} , user){
+    login({commit} , user){//notice that maybe we have to change this type to json =>   to {email : user.email , password : user.password}
       return new Promise((resolve , rej)=>{
         commit('auth_request');
-        axios({url:'http://172.16.37.217:3000/register', data:user , method:'POST'})
+        axios({url:'http://172.16.37.217:3000/register', data:{email:user.email,password:user.password} , method:'POST'})
         .then(resp=>{
           const token = resp.data.token
           const user = resp.data.user
