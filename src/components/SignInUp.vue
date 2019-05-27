@@ -83,9 +83,13 @@ export default {
         },
         //request methods
         login:function(){
-            let email = this.email2;
-            let password = this.password2;
-            this.$store.dispatch('login' , {email,password})
+            // let email = this.email2;
+            // let password = this.password2;
+            let data = {
+                email:this.email2,
+                password:this.password2
+            }
+            this.$store.dispatch('login' , data)
             .then((result) => {
                 console.log(result);
                 this.$router.push('/securepage')
@@ -243,9 +247,12 @@ button.ghost{
     z-index: 100;
 }
 .overlay{
-    background: #ff416c;
-    background: -webkit-linear-gradient(to right, #373B44, #4286f4);
-    background: linear-gradient(to right, #2980B9, #6DD5FA);
+    background-image:url('../assets/hope.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* background: -webkit-linear-gradient(to right, #373B44, #4286f4);
+    background: linear-gradient(to right, #2980B9, #6DD5FA); */
     color: #ffffff;
     position: relative;
     left: -100%;

@@ -82,8 +82,8 @@ export default {
   width: inherit;
 }
 .router-anim-enter-active{
-  animation: coming 1s;
-  animation-delay: 0.6s; 
+  animation: coming 1.4s;
+  animation-delay: 0.5s; 
   opacity: 0;
 }
 .router-anim-leave-active{
@@ -92,10 +92,10 @@ export default {
 
 @keyframes coming {
   from{
-    transform: scale(1.25);
+    transform: translateX(-200px);
   }
   to{
-    transform: scale(1);
+    transform: translateX(0);
     opacity: 1;
   }
 }

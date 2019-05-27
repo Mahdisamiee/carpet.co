@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import Axios from 'axios'
 import './plugins/element.js'
-import { Main,  Carousel,CarouselItem } from 'element-ui'
+import { Main,Carousel,CarouselItem } from 'element-ui'
 
 Vue.use(Main)
 Vue.use(Carousel);

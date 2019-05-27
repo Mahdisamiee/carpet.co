@@ -33,7 +33,7 @@ export default new Vuex.Store({
     login({commit} , user){//notice that maybe we have to change this type to json =>   to {email : user.email , password : user.password}
       return new Promise((resolve , rej)=>{
         commit('auth_request');
-        axios({url:'http://172.16.37.217:3000/register', data:{email:user.email,password:user.password} , method:'POST'})
+        axios({url:'http://172.16.37.165:3000/jwt/login', data:user , method:'post'})
         .then(resp=>{
           const token = resp.data.token
           const user = resp.data.user
@@ -53,14 +53,14 @@ export default new Vuex.Store({
     register({commit} , user){
       return new Promise((resolve , rej)=>{
         commit('auth_request');
-        axios({url:'http://172.16.37.217:3000/register' , data:user , method :"POST"})
+        axios({url:'http://172.16.37.165:3000/register' , data:user , method :"POST"})
         .then(resp=>{
           const token = resp.data.token
           const user = resp.data.user
           localStorage.setItem('token',token)
           axios.defaults.headers.common['pgr-token'] = token
           commit('auth_success', token, user)
-          resolve(resp)
+          resolve(resp.data)
         })
         .catch(err=>{
           commit('auth_error')

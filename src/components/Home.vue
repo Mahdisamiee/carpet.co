@@ -61,9 +61,9 @@
 
         <section id="imggallery" class="section section-dark">
             <div>
-                <el-carousel  height="300px">
+                <el-carousel type="card" height="300px">
                     <el-carousel-item v-for="item in imges" :key="item">
-                        <img class="medium" :src="item" alt="images">
+                        <img :src='"../assets/"+item' alt="hello">
                     </el-carousel-item>
                 </el-carousel>
             </div>
@@ -91,9 +91,10 @@ export default {
     data(){
         return{
             imges:[
-                '../assets/back4.jpeg',
-                '../assets/back5.jpeg',
-                '../assets/back6.jpeg',
+                'avatar.jpg',
+                'back4.jpeg',
+                'back5.jpeg',
+                'back6.jpeg',
             ]
         }
     }
@@ -166,6 +167,7 @@ main{
 .el-carousel__item:nth-child(2n+1) {
     background-color: rgb(153, 153, 153);
 }
+
 
 
 .ptext{
