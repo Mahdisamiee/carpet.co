@@ -63,7 +63,7 @@
             <div>
                 <el-carousel type="card" height="300px">
                     <el-carousel-item v-for="item in imges" :key="item">
-                        <img :src='"../assets/"+item' alt="hello">
+                        <img :src='require("../assets/"+item)' alt="hello">
                     </el-carousel-item>
                 </el-carousel>
             </div>
@@ -91,7 +91,7 @@ export default {
     data(){
         return{
             imges:[
-                'avatar.jpg',
+                'back2.jpeg',
                 'back4.jpeg',
                 'back5.jpeg',
                 'back6.jpeg',
@@ -168,6 +168,12 @@ main{
     background-color: rgb(153, 153, 153);
 }
 
+.el-carousel__item img{
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+}
 
 
 .ptext{

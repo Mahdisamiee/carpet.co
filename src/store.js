@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import { Promise } from 'q';
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     status: '',
-    token: localStorage.getItem('token') || '',
+    token: localStorage.getItem('token') || 's',
     user : {}
   },
 
@@ -76,6 +77,41 @@ export default new Vuex.Store({
         localStorage.removeItem('token')
         delete axios.defaults.headers.common['pgr-token']
         resolve("logout was success")
+      })
+    },
+
+    //action for carpetStore home2
+    fetchCarpets({commit}){
+      return new Promise((resolve,rej)=>{
+        axios({url:'http://172.16.37.165:3000/carpetsdetail' ,  method :"GET"})
+        .then(resp=>{
+          resolve(resp.data)
+        })
+        .catch(err=>{
+          rej(err)
+        })
+      })
+    },
+
+    fetchCarpetComplete({commit} , id){ //getting the complete information about carpet with a specific id. notice that information should be like above
+      /*
+      resp.data:{
+          name: 'bakhtiary',
+          price: 1700,
+          rate: '',
+          detail: 'a great carpet from Kerman',
+          id: 4,
+          imgsrc: require('../assets/back6.jpeg'),   // it can be just a url=> 'https://jfkefjkef.jpg or jpeg'. i would fix it later
+      },
+      */
+      return new Promise((resolve,rej)=>{
+        axios({url:'http://172.16.37.165:3000/carpetcomplete'+id , method:"GET"})
+        .then(resp=>{
+          resolve(resp.data)
+        })
+        .catch(err=>{
+          rej(err)
+        })
       })
     }
 

@@ -4,11 +4,12 @@ import router from './router'
 import store from './store'
 import Axios from 'axios'
 import './plugins/element.js'
-import { Main,Carousel,CarouselItem } from 'element-ui'
+import { Main,Carousel,CarouselItem,Rate } from 'element-ui'
 
 Vue.use(Main)
 Vue.use(Carousel);
 Vue.use(CarouselItem);
+Vue.use(Rate);
 
 //for Axios and token
 Vue.prototype.$http = Axios;

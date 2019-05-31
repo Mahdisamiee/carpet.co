@@ -83,8 +83,6 @@ export default {
         },
         //request methods
         login:function(){
-            // let email = this.email2;
-            // let password = this.password2;
             let data = {
                 email:this.email2,
                 password:this.password2

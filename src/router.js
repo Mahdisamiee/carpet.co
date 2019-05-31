@@ -4,7 +4,7 @@ import store from './store.js'
 
 import Home from './components/Home.vue'
 import SignInUp from './components/SignInUp.vue'
-import Secure from './components/Secure.vue'
+import Home2 from './components/Home2.vue'
 import Secure2 from './components/Secure2.vue'
 import Secure3 from './components/Secure3.vue'
 
@@ -25,9 +25,9 @@ const router = new Router({
       component: SignInUp
     },
     {
-      path:'/secure',
-      name:'secure',
-      component: Secure,
+      path:'/home2',
+      name:'home2',
+      component: Home2,
       meta:{
         requiresAuth: true
       }

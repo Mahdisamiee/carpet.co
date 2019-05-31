@@ -12,7 +12,7 @@
           <router-link to="/">Home</router-link> |
           <span v-if="!isLoggedIn"><router-link to="/register">Register</router-link> | </span>
           <!-- here we add router that we need for our project section-->
-          <span v-if="isLoggedIn"><router-link to="/secure">Secure</router-link> | </span>
+          <span v-if="isLoggedIn"><router-link to="/home2">Home2</router-link> | </span>
           <span v-if="isLoggedIn"><router-link to="/secure2">Secure2</router-link> | </span>
           <span v-if="isLoggedIn"><router-link to="/secure3">Secure3</router-link> | </span>
 
@@ -65,6 +65,10 @@ export default {
 
 <style>
   @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+  
+  *{
+    box-sizing: border-box;
+  }
   #app{
     font-family: 'Montserrat',Arial, Helvetica, sans-serif;
     box-sizing: border-box;
