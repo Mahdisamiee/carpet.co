@@ -302,7 +302,7 @@ export default {
     background-color: #fff;
 }
 
-
+/* Transition for Overlay page */
 .overlay-anim-enter-active{
     animation: coming 1s;
     animation-delay: 0.3s; 
