@@ -4,7 +4,7 @@ import store from './store.js'
 
 import Home from './components/Home.vue'
 import SignInUp from './components/SignInUp.vue'
-import Home2 from './components/Home2.vue'
+import CarpetStore from './components/CarpetStore.vue'
 import Secure2 from './components/Secure2.vue'
 import Secure3 from './components/Secure3.vue'
 
@@ -25,9 +25,9 @@ const router = new Router({
       component: SignInUp
     },
     {
-      path:'/home2',
-      name:'home2',
-      component: Home2,
+      path:'/carpetstore',
+      name:'carpetstore',
+      component: CarpetStore,
       meta:{
         requiresAuth: true
       }

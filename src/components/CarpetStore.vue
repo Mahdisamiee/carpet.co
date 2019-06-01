@@ -130,6 +130,7 @@ export default {
         deleteOverlay:function(){
             this.overlaybool = false;
             //clear all data that fetched before
+            //this.carpetCompleteDetail = {}
         },
         alert:function(){
             alert("im here")

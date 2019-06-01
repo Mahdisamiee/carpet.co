@@ -12,7 +12,7 @@
           <router-link to="/">Home</router-link> |
           <span v-if="!isLoggedIn"><router-link to="/register">Register</router-link> | </span>
           <!-- here we add router that we need for our project section-->
-          <span v-if="isLoggedIn"><router-link to="/home2">Home2</router-link> | </span>
+          <span v-if="isLoggedIn"><router-link to="/carpetstore">carpetstore</router-link> | </span>
           <span v-if="isLoggedIn"><router-link to="/secure2">Secure2</router-link> | </span>
           <span v-if="isLoggedIn"><router-link to="/secure3">Secure3</router-link> | </span>
 
