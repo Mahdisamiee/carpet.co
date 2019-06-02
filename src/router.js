@@ -5,7 +5,7 @@ import store from './store.js'
 import Home from './components/Home.vue'
 import SignInUp from './components/SignInUp.vue'
 import CarpetStore from './components/CarpetStore.vue'
-import Secure2 from './components/Secure2.vue'
+import Dashboard from './components/Dashboard.vue'
 import Secure3 from './components/Secure3.vue'
 
 Vue.use(Router)
@@ -33,9 +33,9 @@ const router = new Router({
       }
     },
     {
-      path:'/secure2',
-      name:'secure2',
-      component: Secure2,
+      path:'/dashboard',
+      name:'dashboard',
+      component: Dashboard,
       meta:{
         requiresAuth: true
       }

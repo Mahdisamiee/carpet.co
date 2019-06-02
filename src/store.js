@@ -119,5 +119,6 @@ export default new Vuex.Store({
   getters: {
     isLoggedIn : state=> !!state.token,
     authStatus : state=> state.status,//we can using this for loading option
+    personalInfo : state=> state.user,
   }
 })
