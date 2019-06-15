@@ -7,9 +7,14 @@
                     <img  :src="personalPic" alt="img">
                     <div id="setting">
                     <!-- here we make some setting to chabge color of site -->
-                        <!-- <a href="#">d</a>
-                        <a href="#">d</a>
-                        <a href="#">a</a> -->
+                        <el-switch
+                            style="display: block"
+                            v-model="backColor"
+                            active-color="#1B9DD7"
+                            inactive-color="#555555"
+                            active-text="light"
+                            inactive-text="dark">
+                        </el-switch>
                     </div>
                 </div>
                 <div id="user">
@@ -20,13 +25,39 @@
                 </div>
             </div>
             <div id="right">
-                <el-tabs :tab-position="tabPosition" style="height: 100%;width:100%;">
-                    <el-tab-pane label="User">User
+                <el-tabs tab-position="top">
+                    <el-tab-pane v-if="!admin" label="User">User
+                        <div id="user" >
+                            <h2>this is a place for manipulate personal information</h2>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane v-if="!admin" label="Config">Config</el-tab-pane>
+                    <el-tab-pane v-if="!admin" label="Role">Role</el-tab-pane>
+
+                    <!-- Admin page content -->
+                    <el-tab-pane id="newcarpet" v-if="admin" label="NewCarpet">
+                        <div id="newcarpet">
+                            <div id="nodenumbersdiv">
+                                <label>Node : </label>
+                                <input v-model="maxNodeSize" type="number" placeholder="enter number of Node" min="0">
+                            </div>
+                            <div id="getnodesdiv">
+                                <input v-model="firstinput" type="text" id="firstinput" maxlength="1" placeholder="Enter main node">
+                                <input v-model="getstring" type="text" id="getstring" placeholder="Enter Neighbor Nodes">
+                            </div>
+                            <div id="submitdiv">
+                                <button class="btn btn-add" v-if="!readytosend" @click.prevent="addNode(firstinput,getstring)">Add</button>
+                                <button class="btn btn-send" v-if="readytosend" @click.prevent="sendingData">Send :)</button>
+                            </div>
+                            <div v-if="readytosend" id="information">
+                                <h3>data to send is:</h3>
+                                <p>{{sendingObject}}</p>
+                            </div>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane v-if="admin" label="ChangeFilter">
 
                     </el-tab-pane>
-                    <el-tab-pane label="Config">Config</el-tab-pane>
-                    <el-tab-pane label="Role">Role</el-tab-pane>
-                    <el-tab-pane v-if="admin" label="Task">Task</el-tab-pane>
                 </el-tabs>
             </div>
         </div>
@@ -40,12 +71,39 @@ export default {
     data(){
         return{
             personalPic:require('../assets/avatar.jpg'),
-            tabPosition:'top',
-            admin:false            
+            admin:true, // should get with getter from store
+            backColor: true,
+            // these are related to #newcarpet div that is for making carpet
+            maxNodeSize : null,
+            firstinput : '',
+            getstring : "",
+            count : 1,
+            sendingObject : {},
+            readytosend : false
         }
     },
     methods:{
-        
+        addNode:function(val,str){
+            if(this.count <= this.maxNodeSize){
+                if(this.count == this.maxNodeSize){
+                    alert("ok! your graph is ready to send.");
+                    this.readytosend = true;
+                    
+                    console.log(this.sendingObject)
+                }
+                let strarr = Array.from(str)
+                this.sendingObject[val] = strarr;
+
+                //after end the proccess
+                this.firstinput = '';
+                this.getstring = "";
+                this.count++;
+            }
+            else{
+                alert("this is not recognize");
+                console.log(this.sendingObject);
+            }
+        }
     },
     computed:{
         userInfo(){
@@ -69,6 +127,7 @@ main{
     left: 0;
     padding: 0;
 }
+
 main #dashboard{
     position: absolute;
     top: 20%;
@@ -81,6 +140,7 @@ main #dashboard{
     border-radius: 4px;
     display: grid;
     grid-template-columns: 1fr 4fr;
+    box-shadow: 9px 8px 30px -5px rgba(92,90,92,1);
 }
 main #dashboard #left{
     background-color: rgb(247, 247, 247);
@@ -108,7 +168,9 @@ main #dashboard #left #profile #setting>a {
     margin: auto;
 }
 main #dashboard #left  #user{
-    padding: 10px;
+    padding: 20px;
+    letter-spacing: 3px;
+    line-height: 25px;
 }
 
 /* HERE IS SEPRATE L_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌ_ٌiNE */
@@ -117,5 +179,46 @@ main #dashboard #right{
     height: 500px;
     padding: 40px;
 }
+.el-tabs{
+    height: 100%;
+    width: 100%;
+    min-width: 760px;
+    padding: 20px;
+}
 
+#newcarpet{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 1rem;
+}
+#newcarpet input{
+    padding: 7px 5px;
+    text-align: center;
+    margin-left: 10px;
+    border: 1px solid rgb(10, 141, 97);
+}
+#newcarpet #firstinput{
+    width: 120px;
+    margin-left:0px;
+}
+.btn{
+    width: 80px;
+    height: 30px;
+    padding: 5px 10px;
+    font-size: 18px;
+    border: none;
+    color: #fff;
+}
+.btn-add{
+    background-color: rgb(10, 141, 97);
+}
+.btn-send{
+    background-color: #409EFF;
+}
+
+/* classes */
+.light{
+    background-color: rgb(110, 110, 110);
+    color: #fff;
+}
 </style>

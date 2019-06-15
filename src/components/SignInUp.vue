@@ -87,13 +87,25 @@ export default {
                 email:this.email2,
                 password:this.password2
             }
-            this.$store.dispatch('login' , data)
-            .then((result) => {
-                console.log(result);
-                this.$router.push('/securepage')
-            }).catch((err) => {
-                console.log(err)
-            });
+            if(this.email2 == "admin@gmail.com"){ //if admin
+                this.$store.dispatch('login2' , data)
+                .then((result) => {
+                    console.log(result);
+                    this.$router.push('/securepage')
+                }).catch((err) => {
+                    console.log(err)
+                });
+            }
+            else{
+                this.$store.dispatch('login' , data)
+                .then((result) => {
+                    console.log(result);
+                    this.$router.push('/securepage')
+                }).catch((err) => {
+                    console.log(err)
+                });
+            }
+            
         },
         register:function(){
             let data = {

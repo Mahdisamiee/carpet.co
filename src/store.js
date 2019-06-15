@@ -9,7 +9,8 @@ export default new Vuex.Store({
   state: {
     status: '',
     token: localStorage.getItem('token') || 's',
-    user : {}
+    user : {},
+    //admin: null
   },
 
   mutations: {
@@ -51,6 +52,26 @@ export default new Vuex.Store({
       })
     },
 
+    // login2({commit} , user){//for admin login
+    //   return new Promise((resolve , rej)=>{
+    //     commit('auth_request');
+    //     axios({url:'http://172.16.37.165:3000/admin/login', data:user , method:'post'})
+    //     .then(resp=>{
+    //       const token = resp.data.token
+    //       const user = resp.data.user
+    //       localStorage.setItem('token' , token)
+    //       axios.defaults.headers.common['pgr-token'] = token
+    //       commit('auth_success' , token , user)
+    //       resolve(resp)
+    //     })
+    //     .catch(err =>{
+    //       commit('auth_error')
+    //       localStorage.removeItem('token')
+    //       rej(err)
+    //     })
+    //   })
+    // },
+
     register({commit} , user){
       return new Promise((resolve , rej)=>{
         commit('auth_request');
@@ -80,7 +101,7 @@ export default new Vuex.Store({
       })
     },
 
-    //action for carpetStore home2
+    //********************** */action for carpetStore home2************************************
     fetchCarpets({commit}){
       return new Promise((resolve,rej)=>{
         axios({url:'http://172.16.37.165:3000/carpetsdetail' ,  method :"GET"})
@@ -105,7 +126,19 @@ export default new Vuex.Store({
       },
       */
       return new Promise((resolve,rej)=>{
-        axios({url:'http://172.16.37.165:3000/carpetcomplete'+id , method:"GET"})
+        axios({url:'http://172.16.37.165:3000/carpetcomplete'+id, method:"GET"})
+        .then(resp=>{
+          resolve(resp.data)
+        })
+        .catch(err=>{
+          rej(err)
+        })
+      })
+    },
+
+    sendRate({commit} , value){
+      return new Promise((resolve, rej)=>{
+        axios({url:'http://172.16.37.165:3000/carpetcomplete'+value.id , data:value.rate, method:'POST'})
         .then(resp=>{
           resolve(resp.data)
         })
@@ -114,7 +147,7 @@ export default new Vuex.Store({
         })
       })
     }
-
+    //************************************End of action of carpet store ********************************* 
   },
   getters: {
     isLoggedIn : state=> !!state.token,

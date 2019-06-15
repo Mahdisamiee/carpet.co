@@ -38,9 +38,7 @@
                 <div>
                     <h2>{{carpetCompleteDetail.detail}}<br></h2>
                     <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, omnis?
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, omnis?
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus 
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, omnis? 
                     dignissimos dolorem eos facere perferendis temporibus error non quisquam fugit libero?
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, omnis?
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, omnis?
@@ -136,7 +134,14 @@ export default {
             alert("im here")
         },
         rateAlert:function(){
-            alert("Thanks For Your Choose");
+            rate = this.carpetCompleteDetail.rate;
+            id = this.carpetCompleteDetail.id
+            this.$store.dispatch('sendRate',{rate,id})
+            .then((result) => {
+                alert("Thanks For Your Choose");
+            }).catch((err) => {
+                alert('ooops! we have some mistake with '+err)
+            })
         }
     },
     created(){
@@ -255,7 +260,7 @@ export default {
     left: 0;
     bottom: 0;
     right: 0;
-    background-color: rgba(71, 57, 57, 0.555);
+    background-color: rgba(62, 60, 70, 0.685);
     z-index: 2;
     padding: 30px;
 }
@@ -267,14 +272,15 @@ export default {
     height: auto;
     overflow: hidden;
     background-color: #ffffff;
+    border-radius: 4px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50% , -50%);
-    padding: 10px 20px;
+    padding: 20px 20px;
     color: #888;
-    letter-spacing: 1px;
-    line-height: 1.5rem;
+    letter-spacing: 1.5px;
+    line-height: 1.6rem;
     z-index: 10;
 }
 
@@ -285,14 +291,14 @@ export default {
 }
 #overlay #content #topdiv #one img{
     width: 100%;
-    border-radius: 4px;
+    border-radius: 10px 0 50% 0;
 }
 
 #overlay #exit{
     position: absolute;
     top: 20px;
     left: 20px;
-    color: greenyellow;
+    color: #174b09;
     padding: 10px;
     border-radius: 3px;
     transition: all;

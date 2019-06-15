@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import Axios from 'axios'
 import './plugins/element.js'
-import { Main,Carousel,CarouselItem,Rate,Tabs,TabPane } from 'element-ui'
+import { Main,Carousel,CarouselItem,Rate,Tabs,TabPane,Switch } from 'element-ui'
 
 Vue.use(Main)
 Vue.use(Carousel);
@@ -12,7 +12,7 @@ Vue.use(CarouselItem);
 Vue.use(Rate);
 Vue.use(Tabs);
 Vue.use(TabPane);
-
+Vue.use(Switch);
 //for Axios and token
 Vue.prototype.$http = Axios;
 const token = localStorage.getItem('token')
