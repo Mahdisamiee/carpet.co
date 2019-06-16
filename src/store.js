@@ -8,9 +8,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     status: '',
-    token: localStorage.getItem('token') || 's',
+    token: localStorage.getItem('token') || '',
     user : {},
-    //admin: null
+    admin: false
   },
 
   mutations: {
@@ -28,6 +28,9 @@ export default new Vuex.Store({
     logout(state){
       state.token = ''
       state.user = ''
+    },
+    admin(state){
+      state.admin = true
     }
   },
 
@@ -35,10 +38,13 @@ export default new Vuex.Store({
     login({commit} , user){//notice that maybe we have to change this type to json =>   to {email : user.email , password : user.password}
       return new Promise((resolve , rej)=>{
         commit('auth_request');
-        axios({url:'http://172.16.37.165:3000/jwt/login', data:user , method:'post'})
+        axios({url:'http://172.16.37.199:3000/login', data:user , method:'post'})
         .then(resp=>{
           const token = resp.data.token
           const user = resp.data.user
+          // if(resp.data.user == null){
+          //   commit('admin');
+          // }
           localStorage.setItem('token' , token)
           axios.defaults.headers.common['pgr-token'] = token
           commit('auth_success' , token , user)
@@ -52,33 +58,39 @@ export default new Vuex.Store({
       })
     },
 
-    // login2({commit} , user){//for admin login
-    //   return new Promise((resolve , rej)=>{
-    //     commit('auth_request');
-    //     axios({url:'http://172.16.37.165:3000/admin/login', data:user , method:'post'})
-    //     .then(resp=>{
-    //       const token = resp.data.token
-    //       const user = resp.data.user
-    //       localStorage.setItem('token' , token)
-    //       axios.defaults.headers.common['pgr-token'] = token
-    //       commit('auth_success' , token , user)
-    //       resolve(resp)
-    //     })
-    //     .catch(err =>{
-    //       commit('auth_error')
-    //       localStorage.removeItem('token')
-    //       rej(err)
-    //     })
-    //   })
-    // },
+    login2({commit} , user){//for admin login
+      return new Promise((resolve , rej)=>{
+        commit('auth_request');
+        axios({url:'http://172.16.37.199:3000/admin/login', data:user , method:'post'})
+        .then(resp=>{
+          const token = resp.data.token
+          
+          if(resp.data.user == null){
+            commit('admin');
+          }
+          localStorage.setItem('token' , token)
+          axios.defaults.headers.common['pgr-token'] = token
+          commit('auth_success' , token , user)
+          resolve(resp)
+        })
+        .catch(err =>{
+          commit('auth_error')
+          localStorage.removeItem('token')
+          rej(err)
+        })
+      })
+    },
 
     register({commit} , user){
       return new Promise((resolve , rej)=>{
         commit('auth_request');
-        axios({url:'http://172.16.37.165:3000/register' , data:user , method :"POST"})
+        axios({url:'http://172.16.37.199:3000/register' , data:user , method :"POST"})
         .then(resp=>{
           const token = resp.data.token
           const user = resp.data.user
+          if(resp.data.user == null){
+            commit('admin');
+          }
           localStorage.setItem('token',token)
           axios.defaults.headers.common['pgr-token'] = token
           commit('auth_success', token, user)
@@ -102,10 +114,11 @@ export default new Vuex.Store({
     },
 
     //********************** */action for carpetStore home2************************************
-    fetchCarpets({commit}){
+    fetchCarpets({commit,state}){
       return new Promise((resolve,rej)=>{
-        axios({url:'http://172.16.37.165:3000/carpetsdetail' ,  method :"GET"})
+        axios({url:'http://172.16.37.199:3000' ,  method :"GET"})
         .then(resp=>{
+          //axios.defaults.headers.common['pgr-token'] = state.token;
           resolve(resp.data)
         })
         .catch(err=>{
@@ -126,9 +139,9 @@ export default new Vuex.Store({
       },
       */
       return new Promise((resolve,rej)=>{
-        axios({url:'http://172.16.37.165:3000/carpetcomplete'+id, method:"GET"})
+        axios({url:'http://172.16.37.199:3000/carpetcomplete/'+id, method:"GET"})
         .then(resp=>{
-          resolve(resp.data)
+          resolve(resp)
         })
         .catch(err=>{
           rej(err)
@@ -138,7 +151,61 @@ export default new Vuex.Store({
 
     sendRate({commit} , value){
       return new Promise((resolve, rej)=>{
-        axios({url:'http://172.16.37.165:3000/carpetcomplete'+value.id , data:value.rate, method:'POST'})
+        axios({url:'http://172.16.37.199:3000/ratecarpet' , data:value , method:'POST'})
+        .then(resp=>{
+          console.log("hi")
+          resolve(resp.data)
+          console.log("hello")
+        })
+        .catch(err=>{
+          console.log("hi2"+err)
+          rej(err)
+        })
+      })
+    },
+    changeCount({commit} , value){
+      return new Promise((resolve, rej)=>{
+        axios({url:'http://172.16.37.199:3000/countcarpet', data:value , method:'POST'})
+        .then(resp=>{
+          console.log("hi")
+          resolve(resp.data)
+          console.log("hello")
+        })
+        .catch(err=>{
+          console.log(value)
+          console.log("hi2"+err)
+          rej(err)
+        })
+      })
+    },
+// ********************************************Dashboard Function*****************************************
+    mapsMe({commit} , data){
+      return new Promise((resolve, rej)=>{
+        axios({url:'http://172.16.37.199:3000/mapsme/'+data , method:'GET'})
+        .then(resp=>{
+          resolve(resp.data)
+        })
+        .catch(err=>{
+          rej(err)
+          console.log(err)
+        })
+      })
+    },
+    makeMap({commit} , data){
+      return new Promise((resolve, rej)=>{
+        axios({url:'http://172.16.37.199:3000/admin/map', data:data, method:'POST'})
+        .then(resp=>{
+          resolve(resp.data)
+        })
+        .catch(err=>{
+          rej(err)
+          console.log(err)
+        })
+      })
+    },
+    makeCarpet({commit} , data){
+      return new Promise((resolve, rej)=>{
+        axios({url:'http://172.16.37.199:3000/users/newcarpet', data:data, method:'POST'})
         .then(resp=>{
           resolve(resp.data)
         })
@@ -153,5 +220,7 @@ export default new Vuex.Store({
     isLoggedIn : state=> !!state.token,
     authStatus : state=> state.status,//we can using this for loading option
     personalInfo : state=> state.user,
+    isAdmin : state=> state.admin,
+    token : state => state.token
   }
 })

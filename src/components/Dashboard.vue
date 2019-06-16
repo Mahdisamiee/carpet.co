@@ -19,23 +19,41 @@
                 </div>
                 <div id="user">
                     <!-- we should add name and last nam here -->
-                    <h3>Hi {{userInfo.name}} {{userInfo.lastname}}</h3>
+                    <!-- <h3>Hi {{userInfo.name}} {{userInfo.lastname}}</h3> -->
                     <p>Welcome to Dashboard</p>
                     <p>here you can access to an amazing world</p>
                 </div>
             </div>
+
             <div id="right">
+
+                
                 <el-tabs tab-position="top">
-                    <el-tab-pane v-if="!admin" label="User">User
+
+                    <!-- Users Page -->
+                    <el-tab-pane v-if="!is_admin" label="User">User
                         <div id="user" >
                             <h2>this is a place for manipulate personal information</h2>
                         </div>
                     </el-tab-pane>
-                    <el-tab-pane v-if="!admin" label="Config">Config</el-tab-pane>
-                    <el-tab-pane v-if="!admin" label="Role">Role</el-tab-pane>
 
-                    <!-- Admin page content -->
-                    <el-tab-pane id="newcarpet" v-if="admin" label="NewCarpet">
+                    <el-tab-pane v-if="!is_admin" id="newcarpet" label="MapsMe">
+                        <div id="newcarpet">
+                            <div>
+                                <h3>Where Are You?</h3>
+                                <input class="mapsme" v-model="mapsme" type="number" placeholder="enter your location" >
+                                <button style="marginLeft:10px" class="btn btn-send" @click.prevent="mapsMe(mapsme)">Find</button>
+                            </div>
+                            <div>
+                                <!-- here we should show the way -->
+                            </div>
+                        </div>
+                    </el-tab-pane>
+
+
+                    <el-tab-pane v-if="!is_admin"  label="Role">Role</el-tab-pane>
+
+                    <el-tab-pane id="newcarpet" v-if="!is_admin" label="NewCarpet">
                         <div id="newcarpet">
                             <div id="nodenumbersdiv">
                                 <label>Node : </label>
@@ -49,14 +67,48 @@
                                 <button class="btn btn-add" v-if="!readytosend" @click.prevent="addNode(firstinput,getstring)">Add</button>
                                 <button class="btn btn-send" v-if="readytosend" @click.prevent="sendingData">Send :)</button>
                             </div>
+                            <div id="count_price">
+                                <input v-model="carpetName" type="text" id="firstinput" placeholder="Enter Name">
+                                <input v-model="carpetCount" type="number" id="getstring" placeholder="Number of Count">
+                                <input v-model="carpetPrice" type="number" id="getstring" placeholder="Price of this">
+                            </div>
                             <div v-if="readytosend" id="information">
                                 <h3>data to send is:</h3>
                                 <p>{{sendingObject}}</p>
                             </div>
                         </div>
                     </el-tab-pane>
-                    <el-tab-pane v-if="admin" label="ChangeFilter">
 
+                    
+                    <!-- Admin page content -->
+                    <el-tab-pane v-if="is_admin" label="ChangeFilter">
+
+                    </el-tab-pane>
+
+                    <el-tab-pane id="fluid" v-if="is_admin" label="FluidMap">
+                        <div id="newway">
+                            <div id="nodenumbersdiv">
+                                <label>Node : </label>
+                                <input v-model="maxNodeSize2" type="number" placeholder="enter number of Node" min="0">
+                            </div>
+                            <div id="storenodes">
+                                <label>Store Node : </label>
+                                <input v-model="storenodes" type="text" id="storenode" placeholder="Enter Stores">
+                            </div>
+                            <div id="getnodesdiv">
+                                <input v-model="firstnode" type="number" id="firstnode" maxlength="1" placeholder="Enter Start Node">
+                                <input v-model="secondnode" type="number" id="secondnode" maxlength="1" placeholder="Enter Destination Node">
+                                <input v-model="distance" type="number" id="distance" placeholder="Enter Distance">
+                            </div>
+                            <div id="submitdiv">
+                                <button class="btn btn-add" v-if="!readytosend2" @click.prevent="addWay(distance)">Add</button>
+                                <button class="btn btn-send" v-if="readytosend2" @click.prevent="sendingData2">Send :)</button>
+                            </div>
+                            <div v-if="readytosend2" id="information">
+                                <h3>data to send is:</h3>
+                                <p>{{sendingObject2}}</p>
+                            </div>
+                        </div>
                     </el-tab-pane>
                 </el-tabs>
             </div>
@@ -71,7 +123,7 @@ export default {
     data(){
         return{
             personalPic:require('../assets/avatar.jpg'),
-            admin:true, // should get with getter from store
+            //is_admin:true, // should get with getter from store
             backColor: true,
             // these are related to #newcarpet div that is for making carpet
             maxNodeSize : null,
@@ -79,10 +131,41 @@ export default {
             getstring : "",
             count : 1,
             sendingObject : {},
-            readytosend : false
+            readytosend : false,
+            carpetName: "",
+            carpetCount : null,
+            carpetPrice : null,
+            //these are related to MapsMe
+            mapsme: null,
+            mapsmedata: [],
+            //these are related to #newway div that is for making way
+            maxNodeSize2 : null,
+            firstnode : null,
+            secondnode : null,
+            distance : null,
+            count2 : 1,
+            readytosend2 : false,
+            sendingObject2 : {
+                matrix :'',
+                count : null,
+                stores : ''
+            },
+            arrayforsob2 : [],
+            storenodes : '',
         }
     },
     methods:{
+        mapsMe:function(mapsme){
+            if(this.mapsme != null){
+                this.$store.dispatch('mapsMe' , mapsme)
+            .then((result) => {
+                this.mapsmedata = result;
+                console.log(result)
+            }).catch((err) => {
+                console.log(err)
+            });
+            }
+        },
         addNode:function(val,str){
             if(this.count <= this.maxNodeSize){
                 if(this.count == this.maxNodeSize){
@@ -103,15 +186,80 @@ export default {
                 alert("this is not recognize");
                 console.log(this.sendingObject);
             }
+        },
+        addWay:function(dist){
+            if(this.storenodes != ''){
+                if(this.count2 <= this.maxNodeSize2*this.maxNodeSize2){
+                    if(this.count2 == this.maxNodeSize2*this.maxNodeSize2){
+                        alert("Ok! your Map Is ready to send.")
+                        this.readytosend2 = true;
+                        //initialize object to send ->
+                        this.sendingObject2.matrix = this.arrayforsob2.join(".")+".0";
+                        this.sendingObject2.count = this.maxNodeSize2;
+                        let str = "";
+                        for (let i = 0; i < this.storenodes.length; i++) {
+                            str += this.storenodes[i]+'.';
+                        }
+                        str = str.substring(0, str.length - 1);
+                        this.sendingObject2.stores = str;
+                        //for debugging->
+                        console.log(this.sendingObject2);
+                        console.log(this.arrayforsob2);
+                    }
+                    this.arrayforsob2.push(dist);
+
+                    //after end proccess
+                    this.firstnode = '';
+                    this.secondnode = '';
+                    this.distance = null;
+                    this.count2++;
+                
+                }else{
+                    alert("this is not Recognize");
+                }
+
+            }
+        },
+        sendingData:function(){
+            let data = {
+                name : this.carpetName,
+                count : this.carpetCount,
+                price : this.carpetPrice,
+                object : this.sendingObject
+            }
+            this.$store.dispatch('makeCarpet' , data)
+            .then((result) => {
+                console.log(result)
+                this.maxNodeSize = null
+                this.firstinput = ''
+                this.getstring = ''
+                this.carpetName = ''
+                this.carpetCount = null
+                this.carpetPrice = null
+            }).catch((err) => {
+                console.log(err)
+            });
+        },
+        sendingData2:function(){
+            this.$store.dispatch('makeMap' , this.sendingObject2)
+            .then((result) => {
+                console.log(result)
+            }).catch((err) => {
+                console.log(err)
+            });
         }
     },
     computed:{
         userInfo(){
             return this.$store.getters.personalInfo;
+        },
+        is_admin(){
+            return this.$store.getters.isAdmin;
         }
     }
 }
 </script>
+
 
 <style scoped>
 *{
@@ -201,6 +349,24 @@ main #dashboard #right{
     width: 120px;
     margin-left:0px;
 }
+
+#newway{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 1rem;
+}
+#newway input{
+    padding: 7px 5px;
+    text-align: center;
+    margin-left: 10px;
+    border: 1px solid rgb(10, 141, 97);
+}
+#newway #firstnode{
+    width: 120px;
+    margin-left:0px;
+}
+
+
 .btn{
     width: 80px;
     height: 30px;

@@ -1,17 +1,17 @@
 <template>
     <main>
         <div class="main">
-            <div v-for="carpet in carpetsFirstInfo" :key="carpet.id" class="cube-wrapper">
+            <div v-for="carpet in carpetsFirstInfo" :key="carpet._id" class="cube-wrapper">
                 <div class="cube">
                     <div class="cube-top">
                         <div id="hoverdiv">        
                             <h2>{{carpet.detail}}</h2>
                             <p>Buy for just {{carpet.price}} $</p>
-                            <a href="#" @click.prevent="addOverlay(carpet.id)" class="btn">READ MORE</a>
+                            <a href="#" @click.prevent="addOverlay(carpet._id)" class="btn">READ MORE</a>
                         </div>
                     </div>
                     <div class="cube-front">
-                        <img v-bind:src="carpet.imgsrc" alt="">
+                        <img v-bind:src="carpet.path" alt=""><!--pay Attention to here ==>>"carpet.path was carpet.imgsrc"-->
                     </div>
                 </div>
             </div>
@@ -22,11 +22,12 @@
             <div id="content">
                 <div id="topdiv">
                     <div id="one">
-                        <img :src="carpetCompleteDetail.imgsrc" alt="image">
+                        <img :src="carpetCompleteDetail.path" alt="image"><!--pay attention to here ==>> the "path"-->
                     </div>
                     <div id="two">
                         <h3>MODEL: {{carpetCompleteDetail.name}}</h3>
                         <h4>PRICE: {{carpetCompleteDetail.price}}$</h4>
+                        <h4>Count: {{carpetCompleteDetail.count}}</h4>
                         <div class="block">
                             <span class="demonstration">Please rate to this carpet :</span>
                             <div @click.prevent="rateAlert">
@@ -36,7 +37,7 @@
                     </div>
                 </div>
                 <div>
-                    <h2>{{carpetCompleteDetail.detail}}<br></h2>
+                    <!-- <h2>{{carpetCompleteDetail.detail}}<br></h2>
                     <p>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, omnis? 
                     dignissimos dolorem eos facere perferendis temporibus error non quisquam fugit libero?
@@ -45,7 +46,10 @@
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus 
                     dignissimos dolorem eos facere perferendis temporibus error non quisquam fugit libero?
                     </p>
-                    <!-- <a href="#" @click.prevent="alert()" class="btn">click</a> -->
+                    <a href="#" @click.prevent="alert()" class="btn">click</a> -->
+                    <h3>Count : </h3>
+                    <input v-model="changedcount" type="number" placeholder="Enter count"><br>
+                    <button @click="changeCount(changedcount)" class="btn-success">Change</button>
                 </div>
                 
             </div>
@@ -66,61 +70,61 @@ export default {
                 {
                     price: 1300,
                     detail: 'great carpet from me',
-                    id: 1,
-                    imgsrc: require('../assets/back3.jpeg')
+                    _id: 1,
+                    path: require('../assets/back3.jpeg')
                 },
                 {
                     price: 1200,
                     detail: 'great carpet from me',
-                    id: 2,
-                    imgsrc: require('../assets/back2.jpeg')
+                    _id: 2,
+                    path: require('../assets/back2.jpeg')
                 },
                 {
                     price: 1200,
                     detail: 'great carpet from me',
-                    id: 3,
-                    imgsrc: require('../assets/back5.jpeg')
+                    _id: 3,
+                    path: require('../assets/back5.jpeg')
                 },
                 {
                     price: 1200,
                     detail: 'great carpet from me',
-                    id: 4,
-                    imgsrc: require('../assets/back8.jpeg')
+                    _id: 4,
+                    path: require('../assets/back8.jpeg')
                 },
                 {
                     price: 1200,
                     detail: 'great carpet from me',
-                    id: 5,
-                    imgsrc: require('../assets/back7.jpeg')
+                    _id: 5,
+                    path: require('../assets/back7.jpeg')
                 }
             ],
             carpetCompleteDetail:{
-                name: 'bakhtiary',
-                price: 1700,
-                rate: '1',
-                detail: 'a great carpet from Kerman',
-                id: 4,
-                imgsrc: require('../assets/back7.jpeg'),
+                
             },
             overlaybool:false,
-            
+            //for change count
+            changedcount: null,
         }
     },
     methods:{
         fetch:function(){//fetch the data of carpets for show them
+    
             this.$store.dispatch('fetchCarpets')
             .then((result) => {
-                this.carpetsFirstInfo = result
+                this.carpetsFirstInfo = result.carpets
+                console.log(result)
             }).catch((err) => {
                 console.log(err)
             });
         },
         addOverlay:function(id){
             this.overlaybool = true;
+            console.log(id)
             //here we just show more details and just fetching an item.its mean we need one object to use here
             this.$store.dispatch('fetchCarpetComplete',id)
             .then((result) => {
-                this.carpetCompleteDetail = result
+                this.carpetCompleteDetail = result.data.carpet
+                console.log(result.data.carpet)
             }).catch((err) => {
                 console.log(err)
             });
@@ -134,12 +138,23 @@ export default {
             alert("im here")
         },
         rateAlert:function(){
-            rate = this.carpetCompleteDetail.rate;
-            id = this.carpetCompleteDetail.id
-            this.$store.dispatch('sendRate',{rate,id})
+            let rate = this.carpetCompleteDetail.rate;
+            let _id = this.carpetCompleteDetail._id
+            this.$store.dispatch('sendRate',{rate,_id})
             .then((result) => {
                 alert("Thanks For Your Choose");
             }).catch((err) => {
+                alert('ooops! we have some mistake with '+err)
+            })
+        },
+        changeCount:function(count){
+            let _id = this.carpetCompleteDetail._id
+            this.$store.dispatch('changeCount',{_id,count})
+            .then((result) => {
+                this.overlaybool = false;
+                alert("change wasmaked");
+            }).catch((err) => {
+                this.overlaybool = false;
                 alert('ooops! we have some mistake with '+err)
             })
         }
