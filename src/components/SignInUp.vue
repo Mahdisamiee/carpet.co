@@ -111,8 +111,7 @@ export default {
             let data = {
                 name : this.name,
                 email : this.email,
-                password : this.password,
-                is_admin : this.is_admin
+                password : this.password
             }
             this.$store.dispatch('register' , data)
             .then((result) => {
@@ -287,7 +286,7 @@ button.ghost{
 }
 .overlay-right{
     right: 0;
-    transform: translateX(10%);
+    transform: translateX(0);
 }
 .overlay-left{
     transform: translateX(-20%);
@@ -308,7 +307,7 @@ button.ghost{
     transform: translateX(50%);
 }
 .container.right-panel-active .overlay-left{
-    transform: translateX(-8%);
+    transform: translateX(0);
 }
 .container.right-panel-active .overlay-right{
     transform: translateX(20%);

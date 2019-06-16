@@ -88,9 +88,9 @@ export default new Vuex.Store({
         .then(resp=>{
           const token = resp.data.token
           const user = resp.data.user
-          if(resp.data.user == null){
-            commit('admin');
-          }
+          // if(resp.data.user == null){
+          //   commit('admin');
+          // }
           localStorage.setItem('token',token)
           axios.defaults.headers.common['pgr-token'] = token
           commit('auth_success', token, user)
@@ -100,6 +100,7 @@ export default new Vuex.Store({
           commit('auth_error')
           localStorage.removeItem('token')
           rej(err)
+          console.log("hi2"+err)
         })
       })
     },
@@ -179,6 +180,18 @@ export default new Vuex.Store({
       })
     },
 // ********************************************Dashboard Function*****************************************
+    suggestion({commit} , data){
+      return new Promise((resolve, rej)=>{
+        axios({url:'http://172.16.37.199:3000/bywithmoney/'+data , method:'GET'})
+        .then(resp=>{
+          resolve(resp.data)
+        })
+        .catch(err=>{
+          rej(err)
+          console.log(err)
+        })
+      })
+    },
     mapsMe({commit} , data){
       return new Promise((resolve, rej)=>{
         axios({url:'http://172.16.37.199:3000/mapsme/'+data , method:'GET'})

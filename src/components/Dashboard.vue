@@ -51,7 +51,15 @@
                     </el-tab-pane>
 
 
-                    <el-tab-pane v-if="!is_admin"  label="Role">Role</el-tab-pane>
+                    <el-tab-pane v-if="!is_admin" id="newcarpet" label="our Suggestion">
+                        <div id="newcarpet">
+                            <div>
+                                <h4>our suggestion to you :)</h4>
+                                <input v-model="suggestionval" type="number" min="0" placeholder="enter your money">
+                                <button style="marginLeft:10px" class="btn btn-send" @click.prevent="suggestion(suggestionval)">Find</button>
+                            </div>
+                        </div>
+                    </el-tab-pane>
 
                     <el-tab-pane id="newcarpet" v-if="!is_admin" label="NewCarpet">
                         <div id="newcarpet">
@@ -135,6 +143,8 @@ export default {
             carpetName: "",
             carpetCount : null,
             carpetPrice : null,
+            //these are related to suggestion
+            suggestionval: null,
             //these are related to MapsMe
             mapsme: null,
             mapsmedata: [],
@@ -155,15 +165,26 @@ export default {
         }
     },
     methods:{
+        suggestion:function(suggestionval){
+            if(this.suggestionval != null){
+                this.$store.dispatch('suggestion' , suggestionval)
+                .then((result) => {
+                    this.suggestiondata = result;//to show this on page
+                    console.log(result)
+                }).catch((err) => {
+                    console.log(err)
+                });
+            }
+        },
         mapsMe:function(mapsme){
             if(this.mapsme != null){
                 this.$store.dispatch('mapsMe' , mapsme)
-            .then((result) => {
-                this.mapsmedata = result;
-                console.log(result)
-            }).catch((err) => {
-                console.log(err)
-            });
+                .then((result) => {
+                    this.mapsmedata = result;
+                    console.log(result)
+                }).catch((err) => {
+                    console.log(err)
+                });
             }
         },
         addNode:function(val,str){
