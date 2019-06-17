@@ -14,9 +14,9 @@
           <!-- here we add router that we need for our project section-->
           <span v-if="isLoggedIn"><router-link to="/carpetstore">carpetstore</router-link> | </span>
           <span v-if="isLoggedIn"><router-link to="/dashboard">Dashboard</router-link> | </span>
-          <span v-if="isLoggedIn"><router-link to="/secure3">Secure3</router-link> | </span>
+          <!-- <span v-if="isLoggedIn"><router-link to="/secure3">Secure3</router-link> | </span> -->
 
-          <span v-if="isLoggedIn"><a id="logout" href="#" @click="logout">Logout</a> | </span>
+          <span v-if="isLoggedIn"><a id="logout" href="#" @click="logout">Logout</a></span>
         </div>
       </div>
     </div>

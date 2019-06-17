@@ -21,7 +21,7 @@
                     <!-- we should add name and last nam here -->
                     <!-- <h3>Hi {{userInfo.name}} {{userInfo.lastname}}</h3> -->
                     <p>Welcome to Dashboard</p>
-                    <p>here you can access to an amazing world</p>
+                    <p>here you can access the new world :)</p>
                 </div>
             </div>
 
@@ -45,7 +45,7 @@
                                 <button style="marginLeft:10px" class="btn btn-send" @click.prevent="mapsMe(mapsme)">Find</button>
                             </div>
                             <div>
-                                <!-- here we should show the way -->
+                                <h3>{{nearestway}}</h3>
                             </div>
                         </div>
                     </el-tab-pane>
@@ -57,6 +57,22 @@
                                 <h4>our suggestion to you :)</h4>
                                 <input v-model="suggestionval" type="number" min="0" placeholder="enter your money">
                                 <button style="marginLeft:10px" class="btn btn-send" @click.prevent="suggestion(suggestionval)">Find</button>
+                            </div>
+                            <div>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <td>Name:</td>
+                                            <td>Count:</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{suggestiondata[0]}}</td>
+                                            <td>{{suggestiondataval[suggestiondata[0]]}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </el-tab-pane>
@@ -145,9 +161,12 @@ export default {
             carpetPrice : null,
             //these are related to suggestion
             suggestionval: null,
+            suggestiondata : [],
+            suggestiondataval : "",
             //these are related to MapsMe
             mapsme: null,
             mapsmedata: [],
+            nearestway : "",
             //these are related to #newway div that is for making way
             maxNodeSize2 : null,
             firstnode : null,
@@ -169,8 +188,12 @@ export default {
             if(this.suggestionval != null){
                 this.$store.dispatch('suggestion' , suggestionval)
                 .then((result) => {
-                    this.suggestiondata = result;//to show this on page
-                    console.log(result)
+                    //this.suggestiondata = result.answer;//to show this on page
+                    this.suggestiondata = Object.keys(result.answer)
+                    this.suggestiondataval = result.answer
+                    console.log("=====")
+                    console.log(this.suggestiondata[0])
+                    console.log(result.answer)
                 }).catch((err) => {
                     console.log(err)
                 });
@@ -180,8 +203,9 @@ export default {
             if(this.mapsme != null){
                 this.$store.dispatch('mapsMe' , mapsme)
                 .then((result) => {
-                    this.mapsmedata = result;
-                    console.log(result)
+                    this.mapsmedata = result.router;
+                    console.log(result.router);
+                    this.nearestway = this.mapsmedata.join(" ==> ")
                 }).catch((err) => {
                     console.log(err)
                 });
@@ -246,20 +270,25 @@ export default {
                 name : this.carpetName,
                 count : this.carpetCount,
                 price : this.carpetPrice,
-                object : this.sendingObject
+                matrix : this.sendingObject
             }
-            this.$store.dispatch('makeCarpet' , data)
-            .then((result) => {
-                console.log(result)
-                this.maxNodeSize = null
-                this.firstinput = ''
-                this.getstring = ''
-                this.carpetName = ''
-                this.carpetCount = null
-                this.carpetPrice = null
-            }).catch((err) => {
-                console.log(err)
-            });
+            if(this.carpetName == ''){
+                alert("please fill the name.")
+            }else{
+                this.$store.dispatch('makeCarpet' , data)
+                .then((result) => {
+                    console.log(result)
+                    this.maxNodeSize = null
+                    this.firstinput = ''
+                    this.getstring = ''
+                    this.carpetName = ''
+                    this.carpetCount = null
+                    this.carpetPrice = null
+                }).catch((err) => {
+                    console.log(err)
+                });
+            }
+            
         },
         sendingData2:function(){
             this.$store.dispatch('makeMap' , this.sendingObject2)
@@ -390,17 +419,22 @@ main #dashboard #right{
 
 .btn{
     width: 80px;
-    height: 30px;
+    height: 32px;
     padding: 5px 10px;
     font-size: 18px;
     border: none;
     color: #fff;
+    transition: all 0.3s;
 }
 .btn-add{
     background-color: rgb(10, 141, 97);
 }
 .btn-send{
     background-color: #409EFF;
+    
+}
+.btn-send:active{
+    transform: scale(0.8);
 }
 
 /* classes */

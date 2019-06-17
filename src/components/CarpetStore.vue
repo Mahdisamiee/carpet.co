@@ -11,7 +11,7 @@
                         </div>
                     </div>
                     <div class="cube-front">
-                        <img v-bind:src="carpet.path" alt=""><!--pay Attention to here ==>>"carpet.path was carpet.imgsrc"-->
+                        <img :src="carpet.imgsrc" alt=""><!--pay Attention to here ==>>"carpet.path was carpet.imgsrc"-->
                     </div>
                 </div>
             </div>
@@ -22,7 +22,7 @@
             <div id="content">
                 <div id="topdiv">
                     <div id="one">
-                        <img :src="carpetCompleteDetail.path" alt="image"><!--pay attention to here ==>> the "path"-->
+                        <img :src="carpetCompleteDetail.imgsrc" alt="image"><!--pay attention to here ==>> the "path"-->
                     </div>
                     <div id="two">
                         <h3>MODEL: {{carpetCompleteDetail.name}}</h3>
@@ -36,7 +36,7 @@
                         </div>
                     </div>
                 </div>
-                <div>
+                <div id="changecount">
                     <!-- <h2>{{carpetCompleteDetail.detail}}<br></h2>
                     <p>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, omnis? 
@@ -47,9 +47,18 @@
                     dignissimos dolorem eos facere perferendis temporibus error non quisquam fugit libero?
                     </p>
                     <a href="#" @click.prevent="alert()" class="btn">click</a> -->
-                    <h3>Count : </h3>
-                    <input v-model="changedcount" type="number" placeholder="Enter count"><br>
-                    <button @click="changeCount(changedcount)" class="btn-success">Change</button>
+                    <div>
+                        <h3>Count : </h3>
+                        <input v-model="changedcount" type="number" placeholder="Enter count"><br>
+                        <button @click="changeCount(changedcount)" class="btn-success">Change</button>
+                    </div>
+                    <div>
+                        <h3>Filter : </h3>
+                        <input v-model="fnewname" type="text" placeholder="Enter Name"><br>
+                        <input style="marginTop:5px;" v-model="fnewprice" type="number" placeholder="Enter Price"><br>
+                        <input style="marginTop:5px;" v-model="fnewcount" type="number" placeholder="Enter count"><br>
+                        <button @click="filter(carpetCompleteDetail._id)" class="btn-success">Filter</button>
+                    </div>
                 </div>
                 
             </div>
@@ -71,31 +80,31 @@ export default {
                     price: 1300,
                     detail: 'great carpet from me',
                     _id: 1,
-                    path: require('../assets/back3.jpeg')
+                    imgsrc: require('../assets/back3.jpeg')
                 },
                 {
                     price: 1200,
                     detail: 'great carpet from me',
                     _id: 2,
-                    path: require('../assets/back2.jpeg')
+                    imgsrc: require('../assets/back2.jpeg')
                 },
                 {
                     price: 1200,
                     detail: 'great carpet from me',
                     _id: 3,
-                    path: require('../assets/back5.jpeg')
+                    imgsrc: require('../assets/back5.jpeg')
                 },
                 {
                     price: 1200,
                     detail: 'great carpet from me',
                     _id: 4,
-                    path: require('../assets/back8.jpeg')
+                    imgsrc: require('../assets/back8.jpeg')
                 },
                 {
                     price: 1200,
                     detail: 'great carpet from me',
                     _id: 5,
-                    path: require('../assets/back7.jpeg')
+                    imgsrc: require('../assets/back7.jpeg')
                 }
             ],
             carpetCompleteDetail:{
@@ -104,6 +113,10 @@ export default {
             overlaybool:false,
             //for change count
             changedcount: null,
+            //for filter
+            fnewcount:null,
+            fnewname: '',
+            fnewprice:null,
         }
     },
     methods:{
@@ -131,12 +144,16 @@ export default {
         },
         deleteOverlay:function(){
             this.overlaybool = false;
+            this.fnewcount = null;
+            this.fnewname = '';
+            this.fnewprice = null;
+            this.changedcount = null;
             //clear all data that fetched before
             //this.carpetCompleteDetail = {}
         },
-        alert:function(){
-            alert("im here")
-        },
+        // alert:function(){
+        //     alert("im here")
+        // },
         rateAlert:function(){
             let rate = this.carpetCompleteDetail.rate;
             let _id = this.carpetCompleteDetail._id
@@ -152,11 +169,31 @@ export default {
             this.$store.dispatch('changeCount',{_id,count})
             .then((result) => {
                 this.overlaybool = false;
+                this.changedcount = false;
                 alert("change wasmaked");
             }).catch((err) => {
                 this.overlaybool = false;
                 alert('ooops! we have some mistake with '+err)
             })
+        },
+        filter:function(id){
+            let data = {
+                name : this.fnewname,
+                count : this.fnewcount,
+                price : this.fnewprice,
+                _id : id
+            }
+            this.$store.dispatch('filterCarpet',data)
+            .then((result) => {
+                console.log(result)
+                this.fnewcount = null
+                this.fnewname = ''
+                this.fnewprice = ''
+                this.overlaybool = false;
+                this.fetch();
+            }).catch((err) => {
+                console.log(err)
+            });
         }
     },
     created(){
@@ -203,6 +240,7 @@ export default {
     justify-content: center;
     align-items: center;
     color: #fff;
+    padding: 10px;
 
     /*background-color: brown;*/
 }
@@ -237,7 +275,7 @@ export default {
     height: inherit;
     opacity: .8;
     padding: 20px 10px;
-    background-color: rgb(248, 85, 9);
+    background-color: rgb(10, 141, 97);
     text-align: center;
     color: #fff;
 }
@@ -265,6 +303,40 @@ export default {
     box-shadow: -1px 1px 2px #fff;
 }
 
+
+#changecount{
+    padding-left: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+#changecount input{
+    width: 130px;
+    border: 1px solid #409EFF;
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-size: 18px;
+}
+#changecount button{
+    width: 130px;
+    border: none;
+    padding: 5px 10px;
+    margin: 5px 0;
+    background-color: #409EFF;
+    color: #fff;
+    border-radius: 3px;
+    transition: all 0.3s 0.0s;
+    font-size: 18px;
+    
+}
+#changecount button:hover{
+    background-color: #fff;
+    color: rgb(10, 141, 97);
+    border: 1px solid rgb(10, 141, 97);
+    font-weight: bold;
+}
+#changecount button:active{
+    transform: scale(0.9);
+}
 
 /* OVERLAY and its CONTENT*/
 #overlay{
@@ -306,14 +378,14 @@ export default {
 }
 #overlay #content #topdiv #one img{
     width: 100%;
-    border-radius: 10px 0 50% 0;
+    /* border-radius: 10px 0 50% 0; */
 }
 
 #overlay #exit{
     position: absolute;
     top: 20px;
     left: 20px;
-    color: #174b09;
+    color: #409EFF;
     padding: 10px;
     border-radius: 3px;
     transition: all;

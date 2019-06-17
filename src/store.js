@@ -38,7 +38,7 @@ export default new Vuex.Store({
     login({commit} , user){//notice that maybe we have to change this type to json =>   to {email : user.email , password : user.password}
       return new Promise((resolve , rej)=>{
         commit('auth_request');
-        axios({url:'http://172.16.37.199:3000/login', data:user , method:'post'})
+        axios({url:'http://172.16.37.39:3000/login', data:user , method:'post'})
         .then(resp=>{
           const token = resp.data.token
           const user = resp.data.user
@@ -61,7 +61,7 @@ export default new Vuex.Store({
     login2({commit} , user){//for admin login
       return new Promise((resolve , rej)=>{
         commit('auth_request');
-        axios({url:'http://172.16.37.199:3000/admin/login', data:user , method:'post'})
+        axios({url:'http://172.16.37.39:3000/admin/login', data:user , method:'post'})
         .then(resp=>{
           const token = resp.data.token
           
@@ -84,7 +84,7 @@ export default new Vuex.Store({
     register({commit} , user){
       return new Promise((resolve , rej)=>{
         commit('auth_request');
-        axios({url:'http://172.16.37.199:3000/register' , data:user , method :"POST"})
+        axios({url:'http://172.16.37.39:3000/register' , data:user , method :"POST"})
         .then(resp=>{
           const token = resp.data.token
           const user = resp.data.user
@@ -117,7 +117,7 @@ export default new Vuex.Store({
     //********************** */action for carpetStore home2************************************
     fetchCarpets({commit,state}){
       return new Promise((resolve,rej)=>{
-        axios({url:'http://172.16.37.199:3000' ,  method :"GET"})
+        axios({url:'http://172.16.37.39:3000' ,  method :"GET"})
         .then(resp=>{
           //axios.defaults.headers.common['pgr-token'] = state.token;
           resolve(resp.data)
@@ -129,18 +129,8 @@ export default new Vuex.Store({
     },
 
     fetchCarpetComplete({commit} , id){ //getting the complete information about carpet with a specific id. notice that information should be like above
-      /*
-      resp.data:{
-          name: 'bakhtiary',
-          price: 1700,
-          rate: '',
-          detail: 'a great carpet from Kerman',
-          id: 4,
-          imgsrc: require('../assets/back6.jpeg'),   // it can be just a url=> 'https://jfkefjkef.jpg or jpeg'. i would fix it later
-      },
-      */
       return new Promise((resolve,rej)=>{
-        axios({url:'http://172.16.37.199:3000/carpetcomplete/'+id, method:"GET"})
+        axios({url:'http://172.16.37.39:3000/carpetcomplete/'+id, method:"GET"})
         .then(resp=>{
           resolve(resp)
         })
@@ -152,22 +142,37 @@ export default new Vuex.Store({
 
     sendRate({commit} , value){
       return new Promise((resolve, rej)=>{
-        axios({url:'http://172.16.37.199:3000/ratecarpet' , data:value , method:'POST'})
+        axios({url:'http://172.16.37.39:3000/ratecarpet' , data:value , method:'POST'})
         .then(resp=>{
-          console.log("hi")
+          console.log("your rate was successfuly send")
           resolve(resp.data)
-          console.log("hello")
         })
         .catch(err=>{
-          console.log("hi2"+err)
+          console.log(err)
           rej(err)
         })
       })
     },
     changeCount({commit} , value){
       return new Promise((resolve, rej)=>{
-        axios({url:'http://172.16.37.199:3000/countcarpet', data:value , method:'POST'})
+        axios({url:'http://172.16.37.39:3000/countcarpet', data:value , method:'POST'})
         .then(resp=>{
+          console.log("hi")
+          resolve(resp.data)
+          console.log("hello")
+        })
+        .catch(err=>{
+          console.log(value)
+          console.log("hi2"+err)
+          rej(err)
+        })
+      })
+    },
+    filterCarpet({commit , state} , value){
+      return new Promise((resolve, rej)=>{
+        axios({url:'http://172.16.37.39:3000/users/filter', data:value , method:'POST'})
+        .then(resp=>{
+          axios.defaults.headers.common['pgr-token'] = state.token;
           console.log("hi")
           resolve(resp.data)
           console.log("hello")
@@ -182,7 +187,7 @@ export default new Vuex.Store({
 // ********************************************Dashboard Function*****************************************
     suggestion({commit} , data){
       return new Promise((resolve, rej)=>{
-        axios({url:'http://172.16.37.199:3000/bywithmoney/'+data , method:'GET'})
+        axios({url:'http://172.16.37.39:3000/bywithmoney/'+data , method:'GET'})
         .then(resp=>{
           resolve(resp.data)
         })
@@ -194,7 +199,7 @@ export default new Vuex.Store({
     },
     mapsMe({commit} , data){
       return new Promise((resolve, rej)=>{
-        axios({url:'http://172.16.37.199:3000/mapsme/'+data , method:'GET'})
+        axios({url:'http://172.16.37.39:3000/mapsme/'+data , method:'GET'})
         .then(resp=>{
           resolve(resp.data)
         })
@@ -206,7 +211,7 @@ export default new Vuex.Store({
     },
     makeMap({commit} , data){
       return new Promise((resolve, rej)=>{
-        axios({url:'http://172.16.37.199:3000/admin/map', data:data, method:'POST'})
+        axios({url:'http://172.16.37.39:3000/admin/map', data:data, method:'POST'})
         .then(resp=>{
           resolve(resp.data)
         })
@@ -218,7 +223,7 @@ export default new Vuex.Store({
     },
     makeCarpet({commit} , data){
       return new Promise((resolve, rej)=>{
-        axios({url:'http://172.16.37.199:3000/users/newcarpet', data:data, method:'POST'})
+        axios({url:'http://172.16.37.39:3000/users/newcarpet', data:data, method:'POST'})
         .then(resp=>{
           resolve(resp.data)
         })
