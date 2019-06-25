@@ -41,14 +41,6 @@ const router = new Router({
       }
     },
     {
-      path:'/secure3',
-      name:'secure3',
-      component: Secure3,
-      meta:{
-        requiresAuth: true
-      }
-    },
-    {
       path:'*',
       redirect:'/'
     }
